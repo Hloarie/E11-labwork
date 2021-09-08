@@ -14,7 +14,6 @@ import csv
 import time
 import math
 import board
-import numpy as np
 from adafruit_bme280 import basic as adafruit_bme280
 
 #sensor = BME280(t_mode=BME280_OSAMPLE_8, p_mode=BME280_OSAMPLE_8, h_mode = BME280_OSAMPLE_8)
@@ -63,8 +62,8 @@ data = [times, temperatures, pressures, humidities]
 #print(df)
 #df.to_csv('test.csv', index=False, header=True)
 
-times_initial = []
-times_initial = np.array(times, dtype='int')
+times_ls = []
+times_ls = list(times)
 
 rows = len(times)
 print(rows)
@@ -78,6 +77,6 @@ with open('test.csv', 'w') as f:
     writer.writeheader()
     #Allows us to write the data into rows
     while i < rows:
-        writer.writerow({'Time':times_initial[i],'Temperature':temperatures[i],'Pressure':pressures[i],'Humidity':humidities[i]})
+        writer.writerow({'Time':times_ls[i],'Temperature':temperatures[i],'Pressure':pressures[i],'Humidity':humidities[i]})
             
 
