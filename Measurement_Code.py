@@ -13,14 +13,17 @@
 import csv
 import time
 import math
-from Adafruit_BME280 import *
+import board
+from adafruit_bme280 import basic as adafruit_bme280
 
-sensor = BME280(t_mode=BME280_OSAMPLE_8, p_mode=BME280_OSAMPLE_8, h_mode = BME280_OSAMPLE_8)
+#sensor = BME280(t_mode=BME280_OSAMPLE_8, p_mode=BME280_OSAMPLE_8, h_mode = BME280_OSAMPLE_8)
+i2c = board.I2C()
+bme280 = adafruit_bme280.Adafruit_BME280_I2C(i2c)
 
-times = []
-temperatures = []
-pressures = []
-humidities = []
+times = ['times']
+temperatures = ['temperatures']
+pressures = ['pressures']
+humidities = ['humidities']
 
 
 start_time = time.time()
@@ -29,9 +32,9 @@ stop_time = start_time + run_time
 current_time = time.time()
 while current_time < stop_time:
     current_time = time.time()
-    temp = bme.readTemperature()
-    pressure = bme.readPressure()
-    humidity = bme.readHumidity()
+    temp = bme280.temperature
+    pressure = bme280.pressure
+    humidity = bme280.humidity
     current_time = time.time()
     print(temp)
     print(pressure)
@@ -44,20 +47,20 @@ while current_time < stop_time:
 
 data = [times, temperatures, pressures, humidities]
     
-with open('test.csv', 'w', newline='') as f:
-    writer = csv.writer(f)
-    for value in data:
-        word = value
-        for num in word:
-            writer.writerow([num])
+#with open('test.csv', 'w', newline='') as f:
+#    writer = csv.writer(f)
+#    for value in data:
+#        word = value
+#        for num in word:
+#            writer.writerow([num])
 
-import pandas as pd
+#import pandas as pd
 
-df = pd.DataFrame({'time': times, 'temperatures': temperatures, 'pressures': pressures, 'humidities': humidities})
-print(df)
-df.to_csv('test.csv', index=False, header=True)
+#df = pd.DataFrame({'time': times, 'temperatures': temperatures, 'pressures': pressures, 'humidities': humidities})
+#print(df)
+#df.to_csv('test.csv', index=False, header=True)
     
-##with open('test.csv', 'w', newline='') as f:
-    ##writer = csv.writer(f)
-    ##writer.writerows(data)
+with open('test.csv', 'w', newline='') as f:
+    writer = csv.writer(f, delimiter=',')
+    writer.writerows(data)
 
